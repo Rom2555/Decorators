@@ -1,10 +1,14 @@
-import datetime
+from datetime import datetime
 import os
+from functools import wraps
 
 
 def logger(old_function):
+    """Декоратор для логирования вызовов функций"""
+
+    @wraps(old_function)
     def new_function(*args, **kwargs):
-        datetime_ = datetime.datetime.now()
+        datetime_ = datetime.now()
         name = old_function.__name__
         if args:
             args_str = ', '.join(str(arg) for arg in args)
@@ -24,7 +28,6 @@ def logger(old_function):
                            f"Именованные аргументы: '{kwargs_str}'\n"
                            f"Результат: '{result}'\n\n")
         return result
-
 
     return new_function
 
@@ -64,7 +67,6 @@ def test_1():
         assert str(item) in log_file_content, f'{item} должен быть записан в файл'
 
     print("Test 1 OK")
-
 
 
 if __name__ == '__main__':
