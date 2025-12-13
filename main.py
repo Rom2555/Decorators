@@ -47,30 +47,24 @@ def test_1():
         return a / b
 
     assert 'Hello World' == hello_world(), "Функция возвращает 'Hello World'"
-    print('OK_1')
     result = summator(2, 2)
     assert isinstance(result, int), 'Должно вернуться целое число'
-    print('OK_2')
     assert result == 4, '2 + 2 = 4'
-    print('OK_3')
     result = div(6, 2)
     assert result == 3, '6 / 2 = 3'
-    print('OK_4')
-
     assert os.path.exists(path), 'файл main.log должен существовать'
-    print('OK_5')
-
     summator(4.3, b=2.2)
     summator(a=0, b=0)
 
-    with open(path, 'r', encoding='utf-8') as log_file:
+    with open(path, encoding='utf-8') as log_file:
         log_file_content = log_file.read()
 
     assert 'summator' in log_file_content, 'должно записаться имя функции'
-    print('OK_6')
     for item in (4.3, 2.2, 6.5):
         assert str(item) in log_file_content, f'{item} должен быть записан в файл'
-    print('OK_7')
+
+    print("Test 1 OK")
+
 
 
 if __name__ == '__main__':
