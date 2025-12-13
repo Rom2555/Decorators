@@ -1,5 +1,5 @@
-from datetime import datetime
 import os
+from datetime import datetime
 from functools import wraps
 
 
@@ -35,8 +35,7 @@ def logger_1(old_function):
 def logger_2(path):
     """Декоратор с аргументом для логирования вызовов функций"""
 
-    @wraps(path)
-    def logger_1(old_function):
+    def decorator(old_function):
         @wraps(old_function)
         def new_function(*args, **kwargs):
             datetime_ = datetime.now()
@@ -62,7 +61,7 @@ def logger_2(path):
 
         return new_function
 
-    return logger_1
+    return decorator
 
 
 # Tests:
