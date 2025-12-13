@@ -1,0 +1,77 @@
+import datetime
+import os
+
+
+def logger(old_function):
+    def new_function(*args, **kwargs):
+        datetime_ = datetime.datetime.now()
+        name = old_function.__name__
+        if args:
+            args_str = ', '.join(str(arg) for arg in args)
+        else:
+            args_str = 'Нет'
+        if kwargs:
+            kwargs_str = ', '.join(f'{key}={value}' for key, value in kwargs.items())
+        else:
+            kwargs_str = 'Нет'
+
+        result = old_function(*args, **kwargs)
+
+        with open('main.log', 'a', encoding='utf-8') as log_file:
+            log_file.write(f"Дата и время: '{datetime_}'\n"
+                           f"Имя функции: '{name}'\n"
+                           f"Позиционные аргументы: '{args_str}'\n"
+                           f"Именованные аргументы: '{kwargs_str}'\n"
+                           f"Результат: '{result}'\n\n")
+        return result
+
+
+    return new_function
+
+
+def test_1():
+    path = 'main.log'
+    if os.path.exists(path):
+        os.remove(path)
+
+    @logger
+    def hello_world():
+        return 'Hello World'
+
+    @logger
+    def summator(a, b=0):
+        return a + b
+
+    @logger
+    def div(a, b):
+        return a / b
+
+    assert 'Hello World' == hello_world(), "Функция возвращает 'Hello World'"
+    print('OK_1')
+    result = summator(2, 2)
+    assert isinstance(result, int), 'Должно вернуться целое число'
+    print('OK_2')
+    assert result == 4, '2 + 2 = 4'
+    print('OK_3')
+    result = div(6, 2)
+    assert result == 3, '6 / 2 = 3'
+    print('OK_4')
+
+    assert os.path.exists(path), 'файл main.log должен существовать'
+    print('OK_5')
+
+    summator(4.3, b=2.2)
+    summator(a=0, b=0)
+
+    with open(path, 'r', encoding='utf-8') as log_file:
+        log_file_content = log_file.read()
+
+    assert 'summator' in log_file_content, 'должно записаться имя функции'
+    print('OK_6')
+    for item in (4.3, 2.2, 6.5):
+        assert str(item) in log_file_content, f'{item} должен быть записан в файл'
+    print('OK_7')
+
+
+if __name__ == '__main__':
+    test_1()
