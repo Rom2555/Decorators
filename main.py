@@ -3,29 +3,35 @@ from datetime import datetime
 from functools import wraps
 
 
+def _format_log_message(func_name, args, kwargs, result, date_time):
+    """Форматирует сообщение для логирования"""
+    args_str = ", ".join(map(str, args)) if args else "Нет"
+    kwargs_str = ", ".join(f"{k}={v}" for k, v in kwargs.items()) if kwargs else "Нет"
+    return (
+        f"Дата и время: '{date_time}'\n"
+        f"Имя функции: '{func_name}'\n"
+        f"Позиционные аргументы: '{args_str}'\n"
+        f"Именованные аргументы: '{kwargs_str}'\n"
+        f"Результат: '{result}'\n\n"
+    )
+
+
 def logger_1(old_function):
     """Декоратор без аргументов для логирования вызовов функций"""
 
     @wraps(old_function)
     def new_function(*args, **kwargs):
-        datetime_ = datetime.now()
-        name = old_function.__name__
-        args_str = ", ".join(map(str,args)) if args else "Нет"
-        kwargs_str = (
-            ", ".join(f"{key}={value}" for key, value in kwargs.items())
-            if kwargs
-            else "Нет"
-        )
         result = old_function(*args, **kwargs)
+        log_message = _format_log_message(
+            func_name=old_function.__name__,
+            args=args,
+            kwargs=kwargs,
+            result=result,
+            date_time=datetime.now(),
+        )
 
         with open("main.log", "a", encoding="utf-8") as log_file:
-            log_file.write(
-                f"Дата и время: '{datetime_}'\n"
-                f"Имя функции: '{name}'\n"
-                f"Позиционные аргументы: '{args_str}'\n"
-                f"Именованные аргументы: '{kwargs_str}'\n"
-                f"Результат: '{result}'\n\n"
-            )
+            log_file.write(log_message)
         return result
 
     return new_function
@@ -37,24 +43,17 @@ def logger_2(path):
     def decorator(old_function):
         @wraps(old_function)
         def new_function(*args, **kwargs):
-            datetime_ = datetime.now()
-            name = old_function.__name__
-            args_str = ", ".join(map(str,args)) if args else "Нет"
-            kwargs_str = (
-                ", ".join(f"{key}={value}" for key, value in kwargs.items())
-                if kwargs
-                else "Нет"
-            )
             result = old_function(*args, **kwargs)
+            log_message = _format_log_message(
+                func_name=old_function.__name__,
+                args=args,
+                kwargs=kwargs,
+                result=result,
+                date_time=datetime.now(),
+            )
 
             with open(path, "a", encoding="utf-8") as log_file:
-                log_file.write(
-                    f"Дата и время: '{datetime_}'\n"
-                    f"Имя функции: '{name}'\n"
-                    f"Позиционные аргументы: '{args_str}'\n"
-                    f"Именованные аргументы: '{kwargs_str}'\n"
-                    f"Результат: '{result}'\n\n"
-                )
+                log_file.write(log_message)
             return result
 
         return new_function
