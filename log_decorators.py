@@ -148,5 +148,10 @@ def test_2():
 
 
 if __name__ == "__main__":
+    # Очистка старых логов
+    for log_file in ["main.log", "log_1.log", "log_2.log", "log_3.log"]:
+        if os.path.exists(log_file):
+            os.remove(log_file)
+    # Тесты:
     test_1()
     test_2()
