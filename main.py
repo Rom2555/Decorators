@@ -10,7 +10,7 @@ def logger_1(old_function):
     def new_function(*args, **kwargs):
         datetime_ = datetime.now()
         name = old_function.__name__
-        args_str = ", ".join(str(arg) for arg in args) if args else "Нет"
+        args_str = ", ".join(map(str,args)) if args else "Нет"
         kwargs_str = (
             ", ".join(f"{key}={value}" for key, value in kwargs.items())
             if kwargs
@@ -39,7 +39,7 @@ def logger_2(path):
         def new_function(*args, **kwargs):
             datetime_ = datetime.now()
             name = old_function.__name__
-            args_str = ", ".join(str(arg) for arg in args) if args else "Нет"
+            args_str = ", ".join(map(str,args)) if args else "Нет"
             kwargs_str = (
                 ", ".join(f"{key}={value}" for key, value in kwargs.items())
                 if kwargs
