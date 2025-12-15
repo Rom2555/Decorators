@@ -1,5 +1,6 @@
 import os
 import types
+
 from log_decorators import logger_1
 
 
@@ -11,6 +12,7 @@ def flat_generator(list_of_lists):
             for item in sublist:
                 yield item
 
+
 @logger_1
 def flat_recursive_generator(list_of_list):
     """Рекурсивный генератор, обрабатывающий списки любой вложенности."""
@@ -20,13 +22,14 @@ def flat_recursive_generator(list_of_list):
         else:
             yield item
 
+
 def test_3():
     """Тест для flat_generator: проверка работы генератора и типа."""
     list_of_lists_1 = [["a", "b", "c"], ["d", "e", "f", "h", False], [1, 2, None]]
 
     for flat_iterator_item, check_item in zip(
-            flat_generator(list_of_lists_1),
-            ["a", "b", "c", "d", "e", "f", "h", False, 1, 2, None],
+        flat_generator(list_of_lists_1),
+        ["a", "b", "c", "d", "e", "f", "h", False, 1, 2, None],
     ):
         assert flat_iterator_item == check_item
 
@@ -45,7 +48,7 @@ def test_3():
     ]
 
     assert isinstance(flat_generator(list_of_lists_1), types.GeneratorType)
-    print("Test 4 OK!")
+    print("Test 3 OK!")
 
 
 def test_4():
@@ -57,8 +60,8 @@ def test_4():
     ]
 
     for flat_iterator_item, check_item in zip(
-            flat_recursive_generator(list_of_lists_2),
-            ["a", "b", "c", "d", "e", "f", "h", False, 1, 2, None, "!"],
+        flat_recursive_generator(list_of_lists_2),
+        ["a", "b", "c", "d", "e", "f", "h", False, 1, 2, None, "!"],
     ):
         assert flat_iterator_item == check_item
 
@@ -77,7 +80,8 @@ def test_4():
         "!",
     ]
     assert isinstance(flat_recursive_generator(list_of_lists_2), types.GeneratorType)
-    print("Test 5 OK!")
+    print("Test 4 OK!")
+
 
 if __name__ == "__main__":
     # Очистка старых логов

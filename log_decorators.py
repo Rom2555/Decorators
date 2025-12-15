@@ -27,7 +27,7 @@ def logger_1(old_function):
             args=args,
             kwargs=kwargs,
             result=result,
-            call_time = datetime.now().strftime("%d.%m.%Y %H:%M:%S"),
+            call_time=datetime.now().strftime("%d.%m.%Y %H:%M:%S"),
         )
 
         try:
@@ -52,7 +52,7 @@ def logger_2(path):
                 args=args,
                 kwargs=kwargs,
                 result=result,
-                call_time = datetime.now().strftime("%d.%m.%Y %H:%M:%S"),
+                call_time=datetime.now().strftime("%d.%m.%Y %H:%M:%S"),
             )
 
             try:
